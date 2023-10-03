@@ -304,22 +304,10 @@ class PrestaShopBackupCore
                         $s = '(';
 
                         foreach ($row as $field => $value) {
-                            $tmp = "'" . pSQL($value, true) . "',";
-                            if ($tmp != "'',") {
-                                $s .= $tmp;
-                            } else {
-                                foreach ($lines as $line) {
-                                    if (strpos($line, '`' . $field . '`') !== false) {
-                                        if (preg_match('/(.*NOT NULL.*)/Ui', $line)) {
-                                            $s .= "'',";
-                                        } else {
-                                            $s .= 'NULL,';
-                                        }
-
-                                        break;
-                                    }
-                                }
-                            }
+							if(is_null($value))
+								$s .= 'NULL,';
+							else
+								$s .= "'" . pSQL($value, true) . "',";
                         }
                         $s = rtrim($s, ',');
 
